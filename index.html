@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ficha de Humanos - Mundo de Tinieblas</title>
+    <style>
+        :root { --dot-size: 13px; }
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #d1d1d1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .sheet {
+            background: white;
+            width: 800px;
+            padding: 30px 50px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 2px solid black;
+        }
+        h1 {
+            text-align: center;
+            font-size: 3.5em;
+            letter-spacing: 10px;
+            margin: 10px 0;
+            border-top: 3px solid black;
+            border-bottom: 3px solid black;
+        }
+        .section-header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3em;
+            margin: 20px 0 10px 0;
+            border-bottom: 2px solid black;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        .field {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+        .field label { font-weight: bold; margin-right: 5px; font-size: 0.9em; min-width: fit-content; }
+        .field input[type="text"] {
+            border: none;
+            border-bottom: 1px solid #000;
+            flex-grow: 1;
+            font-size: 14px;
+            background: transparent;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3px;
+            font-size: 0.95em;
+        }
+        /* Estilo de los Círculos */
+        .dot-container { display: flex; gap: 3px; }
+        .dot {
+            width: var(--dot-size);
+            height: var(--dot-size);
+            border: 1px solid black;
+            border-radius: 50%;
+            cursor: pointer;
+            background-color: white;
+        }
+        .dot.filled { background-color: black; }
+        .dot.locked { cursor: default; }
+
+        .square-box {
+            width: 13px;
+            height: 13px;
+            border: 1px solid black;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .square-box.filled { background-color: black; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        table th, table td { border: 1px solid black; padding: 3px; text-align: center; font-size: 0.8em;}
+        
+        .no-print-btn {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            padding: 15px;
+            background: #222;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        @media print {
+            .no-print-btn { display: none; }
+            body { background: white; padding: 0; }
+            .sheet { box-shadow: none; border: none; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="no-print-btn" onclick="window.print()">🖨️ IMPRIMIR FICHA</button>
+
+    <div class="sheet">
+        <h1>HUMANOS</h1>
+
+        <div class="grid-3">
+            <div>
+                <div class="field"><label>Nombre:</label><input type="text"></div>
+                <div class="field"><label>Jugador:</label><input type="text"></div>
+                <div class="field"><label>Crónica:</label><input type="text"></div>
+            </div>
+            <div>
+                <div class="field"><label>Naturaleza:</label><input type="text"></div>
+                <div class="field"><label>Conducta:</label><input type="text"></div>
+                <div class="field"><label>Residencia:</label><input type="text"></div>
+            </div>
+            <div>
+                <div class="field"><label>Edad:</label><input type="text"></div>
+                <div class="field"><label>Sexo:</label><input type="text"></div>
+                <div class="field"><label>Concepto:</label><input type="text"></div>
+            </div>
+        </div>
+
+        <div class="section-header">Atributos</div>
+        <div class="grid-3">
+            <!-- Físicos -->
+            <div>
+                <center><strong>Físicos</strong></center>
+                <div class="stat-row">Fuerza <div class="dot-container" data-min="1"></div></div>
+                <div class="stat-row">Destreza <div class="dot-container" data-min="1"></div></div>
+                <div class="stat-row">Resistencia <div class="dot-container" data-min="1"></div></div>
+            </div>
+            <!-- Sociales -->
+            <div>
+                <center><strong>Sociales</strong></center>
+                <div class="stat-row">Carisma <div class="dot-container" data-min="1"></div></div>
+                <div class="stat-row">Manipulación <div class="dot-container" data-min="1"></div></div>
+                <div class="stat-row">Apariencia <div class="dot-container" data-min="1"></div></div>
+            </div>
+            <!-- Mentales -->
+            <div>
+                <center><strong>Mentales</strong></center>
+                <div class="stat-row">Percepción <div class="dot-container" data-min="1"></div></div>
+                <div class="stat-row">Inteligencia <div class="dot-container" data-min="1"></div></div>
+                <div class="stat-row">Astucia <div class="dot-container" data-min="1"></div></div>
+            </div>
+        </div>
+
+        <div class="section-header">Habilidades</div>
+        <div class="grid-3">
+            <div>
+                <center><strong>Talentos</strong></center>
+                <div class="stat-row">Alerta <div class="dot-container"></div></div>
+                <div class="stat-row">Atletismo <div class="dot-container"></div></div>
+                <div class="stat-row">Callejeo <div class="dot-container"></div></div>
+                <div class="stat-row">Empatía <div class="dot-container"></div></div>
+                <div class="stat-row">Esquivar <div class="dot-container"></div></div>
+                <div class="stat-row">Expresión <div class="dot-container"></div></div>
+                <div class="stat-row">Intimidación <div class="dot-container"></div></div>
+                <div class="stat-row">Liderazgo <div class="dot-container"></div></div>
+                <div class="stat-row">Pelea <div class="dot-container"></div></div>
+                <div class="stat-row">Subterfugio <div class="dot-container"></div></div>
+            </div>
+            <div>
+                <center><strong>Técnicas</strong></center>
+                <div class="stat-row">Armas C.C. <div class="dot-container"></div></div>
+                <div class="stat-row">Armas Fuego <div class="dot-container"></div></div>
+                <div class="stat-row">Conducir <div class="dot-container"></div></div>
+                <div class="stat-row">Etiqueta <div class="dot-container"></div></div>
+                <div class="stat-row">Interpretación <div class="dot-container"></div></div>
+                <div class="stat-row">Pericias <div class="dot-container"></div></div>
+                <div class="stat-row">Seguridad <div class="dot-container"></div></div>
+                <div class="stat-row">Sigilo <div class="dot-container"></div></div>
+                <div class="stat-row">Supervivencia <div class="dot-container"></div></div>
+                <div class="stat-row">T. Animales <div class="dot-container"></div></div>
+            </div>
+            <div>
+                <center><strong>Conocimientos</strong></center>
+                <div class="stat-row">Academia <div class="dot-container"></div></div>
+                <div class="stat-row">Ciencias <div class="dot-container"></div></div>
+                <div class="stat-row">Finanzas <div class="dot-container"></div></div>
+                <div class="stat-row">Informática <div class="dot-container"></div></div>
+                <div class="stat-row">Investigación <div class="dot-container"></div></div>
+                <div class="stat-row">Leyes <div class="dot-container"></div></div>
+                <div class="stat-row">Lingüística <div class="dot-container"></div></div>
+                <div class="stat-row">Medicina <div class="dot-container"></div></div>
+                <div class="stat-row">Ocultismo <div class="dot-container"></div></div>
+                <div class="stat-row">Política <div class="dot-container"></div></div>
+            </div>
+        </div>
+
+        <div class="section-header">Ventajas</div>
+        <div class="grid-3">
+            <div>
+                <center><strong>Numenes</strong></center>
+                <div class="stat-row"><input type="text" style="width:65%"><div class="dot-container"></div></div>
+                <div class="stat-row"><input type="text" style="width:65%"><div class="dot-container"></div></div>
+                <div class="stat-row"><input type="text" style="width:65%"><div class="dot-container"></div></div>
+                
+                <center style="margin-top:15px"><strong>Virtudes</strong></center>
+                <div class="stat-row">Conciencia <div class="dot-container" data-min="1"></div></div>
+                <div class="stat-row">Autocontrol <div class="dot-container" data-min="1"></div></div>
+                <div class="stat-row">Coraje <div class="dot-container" data-min="1"></div></div>
+            </div>
+            
+            <div>
+                <center><strong>Trasfondos</strong></center>
+                <div class="stat-row"><input type="text" style="width:65%"><div class="dot-container"></div></div>
+                <div class="stat-row"><input type="text" style="width:65%"><div class="dot-container"></div></div>
+                <div class="stat-row"><input type="text" style="width:65%"><div class="dot-container"></div></div>
+                
+                <center style="margin-top:15px"><strong>Humanidad</strong></center>
+                <center><div class="dot-container" data-size="10" style="justify-content:center"></div></center>
+
+                <center style="margin-top:10px"><strong>Voluntad</strong></center>
+                <center><div class="dot-container" data-size="10" style="justify-content:center; margin-bottom:5px"></div></center>
+                <center><div class="square-container" data-size="10"></div></center>
+            </div>
+
+            <div>
+                <center><strong>Salud</strong></center>
+                <div class="stat-row"><span>Magullado</span> <div class="square-box"></div></div>
+                <div class="stat-row"><span>Lastimado (-1)</span> <div class="square-box"></div></div>
+                <div class="stat-row"><span>Lesionado (-1)</span> <div class="square-box"></div></div>
+                <div class="stat-row"><span>Herido (-2)</span> <div class="square-box"></div></div>
+                <div class="stat-row"><span>Malherido (-2)</span> <div class="square-box"></div></div>
+                <div class="stat-row"><span>Tullido (-5)</span> <div class="square-box"></div></div>
+                <div class="stat-row"><span>Incapacitado</span> <div class="square-box"></div></div>
+            </div>
+        </div>
+
+        <div class="section-header">Combate</div>
+        <table>
+            <tr><th>Arma</th><th>Dif</th><th>Daño</th><th>Ocultamiento</th></tr>
+            <tr><td><input type="text" style="width:95%; border:none"></td><td><input type="text" style="width:95%; border:none; text-align:center"></td><td><input type="text" style="width:95%; border:none; text-align:center"></td><td><input type="text" style="width:95%; border:none; text-align:center"></td></tr>
+            <tr><td><input type="text" style="width:95%; border:none"></td><td><input type="text" style="width:95%; border:none; text-align:center"></td><td><input type="text" style="width:95%; border:none; text-align:center"></td><td><input type="text" style="width:95%; border:none; text-align:center"></td></tr>
+        </table>
+    </div>
+
+    <script>
+        // Función para inicializar los grupos de puntos (dots)
+        function initDots() {
+            document.querySelectorAll('.dot-container').forEach(container => {
+                const size = container.dataset.size || 5;
+                const min = container.dataset.min || 0;
+
+                for (let i = 0; i < size; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    if (i < min) {
+                        dot.classList.add('filled', 'locked');
+                    }
+                    
+                    dot.addEventListener('click', () => {
+                        if (dot.classList.contains('locked')) return;
+                        
+                        const allDots = container.querySelectorAll('.dot');
+                        const currentIndex = Array.from(allDots).indexOf(dot);
+                        const isAlreadyFilled = dot.classList.contains('filled');
+                        const isNextFilled = allDots[currentIndex + 1]?.classList.contains('filled');
+
+                        // Lógica: Si clico uno relleno y el siguiente está vacío, lo vacío (toggle para bajar nivel)
+                        // Si clico uno vacío, relleno hasta ese índice.
+                        allDots.forEach((d, idx) => {
+                            if (idx < min) return; // No tocar los bloqueados
+                            
+                            if (idx <= currentIndex) {
+                                if (idx === currentIndex && isAlreadyFilled && !isNextFilled) {
+                                    d.classList.remove('filled');
+                                } else {
+                                    d.classList.add('filled');
+                                }
+                            } else {
+                                d.classList.remove('filled');
+                            }
+                        });
+                    });
+                    container.appendChild(dot);
+                }
+            });
+        }
+
+        // Función para los cuadrados (Salud y Gasto Voluntad)
+        function initSquares() {
+            // Contenedores de cuadrados (Voluntad gasto)
+            document.querySelectorAll('.square-container').forEach(container => {
+                const size = container.dataset.size || 10;
+                for (let i = 0; i < size; i++) {
+                    const sq = document.createElement('div');
+                    sq.classList.add('square-box');
+                    sq.style.margin = "0 2px";
+                    sq.addEventListener('click', () => sq.classList.toggle('filled'));
+                    container.appendChild(sq);
+                }
+            });
+
+            // Cuadrados individuales (Salud)
+            document.querySelectorAll('.square-box:not(parent .square-box)').forEach(sq => {
+                sq.addEventListener('click', () => sq.classList.toggle('filled'));
+            });
+        }
+
+        window.onload = () => {
+            initDots();
+            initSquares();
+        };
+    </script>
+</body>
+</html>
